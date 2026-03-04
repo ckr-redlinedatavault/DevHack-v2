@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Mail, Users, CheckCircle2, Copy } from "lucide-react";
+import { ArrowLeft, Mail, Users, CheckCircle2, Copy, ArrowRight } from "lucide-react";
 import InviteActions from "./InviteActions";
 
 export default async function EventDashboard({ params }: { params: Promise<{ eventId: string }> }) {

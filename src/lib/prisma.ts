@@ -1,3 +1,4 @@
+// Force Next.js to re-evaluate the generated Prisma client for new HackathonEvent schema updates
 import { PrismaClient } from "../generated/prisma";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
