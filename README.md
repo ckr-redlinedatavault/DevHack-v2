@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png" width="280" alt="DevHack Logo">
+</p>
 
-## Getting Started
+<h1 align="center">DevHack</h1>
 
-First, run the development server:
+<p align="center">
+  The Complete Vibe Coding Ecosystem for Hackathon Teams
+</p>
 
+<p align="center">
+  <a href="#overview">Overview</a> | 
+  <a href="#technical-stack">Technical Stack</a> | 
+  <a href="#key-modules">Key Modules</a> | 
+  <a href="#installation">Installation</a> | 
+  <a href="#deployment">Deployment</a>
+</p>
+
+---
+
+## Overview
+
+DevHack is a unified collaborative workspace designed specifically for hackathon participants. It bridges the gap between ideation and submission by providing a high-density environment to manage tasks, resources, and technical documentation in real-time. The platform focuses on a premium developer experience with a focus on efficiency during high-pressure coding sessions.
+
+## Technical Stack
+
+### Frontend Architecture
+- Framework: Next.js 16 (App Router)
+- Language: TypeScript
+- Library: React 19
+- Styling: Tailwind CSS 4
+- State Management: Zustand
+- Markdown Support: React Markdown with Rehype Highlight
+- Icons: Lucide React
+
+### Backend and Database
+- Runtime: Node.js
+- ORM: Prisma
+- Database: PostgreSQL (with pg adapter)
+- Authentication: NextAuth.js
+- Email Service: Resend
+- API Communication: Axios
+
+### Development Tools
+- Package Manager: npm
+- Linting: ESLint
+- Styling Utilities: clsx, tailwind-merge
+
+## Key Modules
+
+### Workspace Management
+A centralized dashboard for team leads to initialize projects, manage member access through invite codes, and track overall progress through high-level statistics.
+
+### Kanban Task System
+A specialized task board designed for rapid iteration. It supports lifecycle stages from backlog to completion, optimized for the typical 24-48 hour hackathon window.
+
+### Problem Discovery
+A curated library of global problem statements, including real-time scrapers for events like SIH 2025, enabling teams to align their builds with verified challenges.
+
+### Code Library and Resource Hub
+An exhaustive technical resource covering 75+ technology stacks. It includes documentation links for core languages, frontend frameworks, backend systems, and cloud infrastructure.
+
+### LLM Intelligence
+An integrated AI co-pilot capable of debugging code, drafting documentation, and analyzing problem statements directly within the workspace environment.
+
+## Installation
+
+### Prerequisites
+- Node.js 18.x or higher
+- PostgreSQL instance
+
+### Setup Steps
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ckr-redlinedatavault/DevHack.git
+cd devhack
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configure environment variables
+Create a .env file and include:
+```env
+DATABASE_URL="postgresql://..."
+NEXTAUTH_SECRET="..."
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+RESEND_API_KEY="..."
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Initialize the database
+```bash
+npx prisma db push
+```
 
-## Learn More
+5. Run the development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application is optimized for deployment on the Vercel platform.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Ensure all environment variables are configured in the Vercel dashboard.
+2. The post-install script will automatically handle Prisma client generation.
+3. Build and deploy through the Vercel CLI or Git integration.
