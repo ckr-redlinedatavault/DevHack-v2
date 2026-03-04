@@ -1,7 +1,7 @@
 import { NextResponse } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(req: Request, { params }: { params: { eventId: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ eventId: string }> }) {
     try {
         const { eventId } = await params;
         const { teamName, leadEmail } = await req.json();

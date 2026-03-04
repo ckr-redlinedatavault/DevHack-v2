@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import { getOrganizerId } from "@/lib/organizer-auth-utils";
 
-export async function POST(req: Request, { params }: { params: { eventId: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ eventId: string }> }) {
     try {
         const organizerId = await getOrganizerId();
         const { eventId } = await params;

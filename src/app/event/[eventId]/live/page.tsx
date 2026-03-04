@@ -4,7 +4,7 @@ import Link from "next/link";
 import LiveEventTimer from "./LiveEventTimer";
 import { Activity, ShieldCheck, Zap } from "lucide-react";
 
-export default async function LiveEventStatusPage({ params }: { params: { eventId: string } }) {
+export default async function LiveEventStatusPage({ params }: { params: Promise<{ eventId: string }> }) {
     const { eventId } = await params;
 
     // In a real isolated env, we would verify their INVITED status token.

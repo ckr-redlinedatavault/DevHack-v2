@@ -4,7 +4,7 @@ import RegistrationForm from "./RegistrationForm";
 import Link from "next/link";
 import { Calendar, Globe, Users, Trophy } from "lucide-react";
 
-export default async function PublicEventPage({ params }: { params: { eventId: string } }) {
+export default async function PublicEventPage({ params }: { params: Promise<{ eventId: string }> }) {
     const { eventId } = await params;
 
     const event = await prisma.hackathonEvent.findUnique({

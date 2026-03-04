@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Mail, Users, CheckCircle2, Copy } from "lucide-react";
 import InviteActions from "./InviteActions";
 
-export default async function EventDashboard({ params }: { params: { eventId: string } }) {
+export default async function EventDashboard({ params }: { params: Promise<{ eventId: string }> }) {
     const { eventId } = await params;
     const cookieStore = await cookies();
     const organizerId = cookieStore.get("organizerId")?.value;
