@@ -20,6 +20,7 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
             <a href="#how-it-works" className="hover:text-white transition-colors">How it works</a>
             <a href="#features" className="hover:text-white transition-colors">Features</a>
+            <Link href="/organizer/login" className="hover:text-white transition-colors flex items-center gap-1"><Zap className="w-3.5 h-3.5 text-rose-500" /> Organizers</Link>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
@@ -60,6 +61,13 @@ export default function LandingPage() {
               >
                 Features
               </a>
+              <Link
+                href="/organizer/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-2"
+              >
+                <Zap className="w-4 h-4 text-rose-500" /> Organizers
+              </Link>
               <hr className="border-white/5" />
               <div className="flex flex-col gap-4 pt-2">
                 <Link href="/login" className="text-lg font-medium text-zinc-400 hover:text-white transition-colors">Login</Link>
