@@ -48,73 +48,69 @@ export async function sendInviteEmail(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevHack Invite</title>
   <style>
-    body { margin: 0; padding: 0; background-color: #09090b; }
-    table { border-collapse: collapse; }
-    .main-table { width: 100%; max-width: 560px; margin: 40px auto; background-color: #111113; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; }
-    .content-cell { padding: 40px 32px; }
-    .eyebrow { display: inline-block; padding: 4px 12px; border-radius: 100px; color: #818cf8; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; background-color: rgba(79,70,229,0.1); border: 1px solid rgba(79,70,229,0.2); }
-    h1 { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.3; margin: 20px 0 12px; }
-    p { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 14px; color: #71717a; line-height: 1.6; margin: 0 0 16px; }
-    .card { background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px 24px; margin: 24px 0; width: 100%; }
-    .invite-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 24px; font-weight: 900; letter-spacing: 4px; color: #818cf8; background-color: rgba(79,70,229,0.08); border: 1px dashed rgba(79,70,229,0.3); border-radius: 10px; padding: 16px; text-align: center; margin: 20px 0; }
-    .btn { display: inline-block; padding: 16px 32px; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-align: center; }
-    .footer { padding: 24px; background-color: #0c0c0e; border-top: 1px solid #27272a; text-align: center; }
+    body { margin: 0; padding: 0; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .main-table { width: 100%; max-width: 500px; margin: 40px auto; background-color: #09090b; border: 1px solid #18181b; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .content-cell { padding: 48px 40px; }
+    .eyebrow { display: inline-block; padding: 6px 12px; border-radius: 8px; color: #f43f5e; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; background-color: rgba(244,63,94,0.05); border: 1px solid rgba(244,63,94,0.1); margin-bottom: 24px; }
+    h1 { font-size: 28px; font-weight: 800; color: #ffffff; line-height: 1.2; margin: 0 0 16px; letter-spacing: -0.02em; }
+    p { font-size: 15px; color: #a1a1aa; line-height: 1.6; margin: 0 0 24px; }
+    .card { background-color: #000000; border: 1px solid #18181b; border-radius: 20px; padding: 24px; margin: 32px 0; }
+    .invite-label { font-size: 10px; font-weight: 800; color: #52525b; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: block; text-align: center; }
+    .invite-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 26px; font-weight: 900; color: #ffffff; text-align: center; margin: 0; }
+    .btn { display: block; padding: 18px 32px; background-color: #f43f5e; color: #ffffff !important; text-decoration: none; border-radius: 14px; font-size: 14px; font-weight: 800; text-align: center; box-shadow: 0 10px 20px rgba(244,63,94,0.2); transition: all 0.2s; }
+    .footer { padding: 32px 40px; background-color: rgba(255,255,255,0.02); text-align: center; }
+    .footer-text { font-size: 11px; color: #3f3f46; margin: 0; line-height: 1.5; }
+    .logo-container { padding: 40px 0 0; text-align: center; }
+    .logo-icon { width: 32px; h: 32px; background-color: #f43f5e; border-radius: 10px; display: inline-block; margin-bottom: 12px; line-height: 32px; color: white; font-weight: 900; font-size: 18px; }
+    .logo-text { color: white; font-weight: 800; font-size: 18px; letter-spacing: -0.04em; margin-left: 8px; }
   </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #09090b;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #09090b;">
+<body>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #000000;">
     <tr>
-      <td align="center" style="padding: 20px;">
+      <td align="center" style="padding: 40px 20px;">
         <table class="main-table" border="0" cellspacing="0" cellpadding="0">
-          <!-- Header -->
+          <!-- Header Logo -->
           <tr>
-            <td align="center" style="background-color: #000000; padding: 24px 32px; border-bottom: 1px solid #27272a;">
-              <img src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png" width="180" alt="DevHack Logo" style="display: block; outline: none; border: none; text-decoration: none;">
+            <td class="logo-container">
+               <div class="logo-icon">V</div>
+               <span class="logo-text">DevHack</span>
             </td>
           </tr>
 
           <!-- Body -->
           <tr>
             <td class="content-cell">
-              <span class="eyebrow">Team Invite</span>
-              <h1>Workspace Invitation</h1>
+              <span class="eyebrow">Transmission Received</span>
+              <h1>Join the mission.</h1>
               <p>Hello,</p>
-              <p><strong style="color: #e4e4e7;">${senderName}</strong> has invited you to collaborate on <strong style="color: #ffffff;">${teamName}</strong> for the project <strong>${projectName}</strong>.</p>
+              <p><strong style="color: #ffffff;">${senderName}</strong> has provisioned a slot for you to join <strong style="color: #f43f5e;">${teamName}</strong> for the build phase of <strong style="color: #ffffff;">${projectName}</strong>.</p>
               
-              <table class="card" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td style="padding-bottom: 8px; font-family: sans-serif; font-size: 11px; font-weight: 700; color: #52525b; text-transform: uppercase; letter-spacing: 1px;">Team Name</td>
-                  <td align="right" style="padding-bottom: 8px; font-family: sans-serif; font-size: 14px; font-weight: 600; color: #e4e4e7;">${teamName}</td>
-                </tr>
-                <tr>
-                  <td style="font-family: sans-serif; font-size: 11px; font-weight: 700; color: #52525b; text-transform: uppercase; letter-spacing: 1px;">Project</td>
-                  <td align="right" style="font-family: sans-serif; font-size: 14px; font-weight: 600; color: #e4e4e7;">${projectName}</td>
-                </tr>
-              </table>
+              <div class="card">
+                <span class="invite-label">Official Invite Code</span>
+                <div class="invite-code">${inviteCode}</div>
+              </div>
 
-              <p style="text-align: center; font-family: sans-serif; font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 32px; margin-bottom: 8px;">Use this invite code to join</p>
-              <div class="invite-code">${inviteCode}</div>
-
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 32px; margin-bottom: 32px;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 40px;">
                 <tr>
                   <td align="center">
-                    <a href="${inviteLink}" class="btn">Join Workspace Now</a>
+                    <a href="${inviteLink}" class="btn">Initialize Workspace Access</a>
                   </td>
                 </tr>
               </table>
 
-              <hr style="border: none; border-top: 1px solid #27272a; margin: 32px 0;" />
-              <p style="font-family: sans-serif; font-size: 12px; color: #3f3f46; margin: 0;">Trouble with the button? Copy this link:<br />
-                <a href="${inviteLink}" style="color: #818cf8; text-decoration: none; word-break: break-all;">${inviteLink}</a>
-              </p>
+              <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #18181b;">
+                <p style="font-size: 12px; color: #3f3f46; margin-bottom: 4px;">Direct link relay:</p>
+                <a href="${inviteLink}" style="color: #52525b; text-decoration: none; word-break: break-all; font-size: 11px;">${inviteLink}</a>
+              </div>
             </td>
           </tr>
 
           <!-- Footer -->
           <tr>
             <td class="footer">
-              <p style="margin: 0; font-family: sans-serif; font-size: 11px; color: #3f3f46;">© ${new Date().getFullYear()} DevHack · Built for Hackathon Teams</p>
-              <p style="margin-top: 8px; font-family: sans-serif; font-size: 10px; color: #27272a;">This is an automated invitation. If you didn't expect this, please ignore.</p>
+              <p class="footer-text">© ${new Date().getFullYear()} DevHack. Mission Critical Infrastructure.</p>
+              <p class="footer-text" style="color: #27272a; margin-top: 8px;">If this wasn't expected, please disregard this transmission.</p>
             </td>
           </tr>
         </table>
@@ -170,36 +166,33 @@ export async function sendPasswordResetEmail(
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevHack Password Reset</title>
   <style>
-    body { margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
-    .main-table { width: 100%; max-width: 560px; margin: 40px auto; background-color: #111113; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; }
-    .content-cell { padding: 40px 32px; text-align: center; }
-    h1 { font-size: 24px; font-weight: 800; color: #ffffff; margin: 0 0 16px; }
-    p { font-size: 14px; color: #71717a; line-height: 1.6; margin: 0 0 24px; }
-    .btn { display: inline-block; padding: 14px 28px; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; border-radius: 12px; font-weight: 700; margin-bottom: 32px; }
-    .footer { padding: 24px; background-color: #0c0c0e; border-top: 1px solid #27272a; text-align: center; font-size: 11px; color: #3f3f46; }
+    body { margin: 0; padding: 0; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .main-table { width: 100%; max-width: 500px; margin: 40px auto; background-color: #09090b; border: 1px solid #18181b; border-radius: 24px; overflow: hidden; }
+    .content-cell { padding: 56px 40px; text-align: center; }
+    h1 { font-size: 26px; font-weight: 800; color: #ffffff; margin: 0 0 16px; letter-spacing: -0.02em; }
+    p { font-size: 15px; color: #a1a1aa; line-height: 1.6; margin: 0 0 32px; }
+    .btn { display: inline-block; padding: 18px 36px; background-color: #f43f5e; color: #ffffff !important; text-decoration: none; border-radius: 14px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 20px rgba(244,63,94,0.15); }
+    .footer { padding: 32px; background-color: rgba(255,255,255,0.02); text-align: center; font-size: 11px; color: #3f3f46; border-top: 1px solid #18181b; }
+    .logo-icon { width: 32px; height: 32px; background-color: #f43f5e; border-radius: 10px; display: inline-block; margin-bottom: 24px; line-height: 32px; color: white; font-weight: 900; font-size: 18px; text-align: center; }
   </style>
 </head>
 <body>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <td align="center" style="padding: 20px;">
+      <td align="center" style="padding: 40px 20px;">
         <table class="main-table" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td align="center" style="background-color: #000000; padding: 24px; border-bottom: 1px solid #27272a;">
-              <img src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png" width="140" alt="DevHack Logo">
-            </td>
-          </tr>
-          <tr>
             <td class="content-cell">
-              <h1>Password Reset Request</h1>
-              <p>Hello ${userName},<br/><br/>We received a request to reset the password for your DevHack account. Click the button below to choose a new password. This link will expire in 1 hour.</p>
+              <div class="logo-icon">V</div>
+              <h1>Restore access.</h1>
+              <p>Hello ${userName},<br/><br/>We received a request to recalibrate the security credentials for your DevHack account. Click below to continue. This link expires in 60 minutes.</p>
               <a href="${resetLink}" class="btn">Reset Password</a>
-              <p style="font-size: 12px; margin-bottom: 0;">If you didn't request this, you can safely ignore this email.</p>
+              <p style="font-size: 12px; margin-top: 40px; margin-bottom: 0; color: #3f3f46;">If you didn't initiate this request, no action is required.</p>
             </td>
           </tr>
           <tr>
             <td class="footer">
-              © ${new Date().getFullYear()} DevHack. All rights reserved.
+              © ${new Date().getFullYear()} DevHack. Global Security Infrastructure.
             </td>
           </tr>
         </table>

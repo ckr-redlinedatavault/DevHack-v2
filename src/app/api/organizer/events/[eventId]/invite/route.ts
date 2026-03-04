@@ -41,17 +41,61 @@ export async function POST(req: Request, { params }: { params: Promise<{ eventId
             const mailOptions = {
                 from: `"DevHack Organizer" <${process.env.GMAIL_USER}>`,
                 to: reg.leadEmail,
-                subject: `You're invited to ${event.name}!`,
+                subject: `Approval Granted: Welcome to ${event.name}!`,
                 html: `
-                <div style="font-family: sans-serif; padding: 20px; background-color: #09090b; color: white;">
-                    <h1 style="color: #10b981;">Access Granted!</h1>
-                    <p>Hello ${reg.teamName} team lead,</p>
-                    <p>Your team's registration for <strong>${event.name}</strong> has been officially approved.</p>
-                    <p>You can access the live hackathon status portal and timer here:</p>
-                    <a href="${liveEventUrl}" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: black;text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 20px;">
-                        Enter Live Status Portal
-                    </a>
-                </div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevHack Approval</title>
+  <style>
+    body { margin: 0; padding: 0; background-color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .main-table { width: 100%; max-width: 500px; margin: 40px auto; background-color: #09090b; border: 1px solid #18181b; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .content-cell { padding: 48px 40px; }
+    .eyebrow { display: inline-block; padding: 6px 12px; border-radius: 8px; color: #f43f5e; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; background-color: rgba(244,63,94,0.05); border: 1px solid rgba(244,63,94,0.1); margin-bottom: 24px; }
+    h1 { font-size: 28px; font-weight: 800; color: #ffffff; line-height: 1.2; margin: 0 0 16px; letter-spacing: -0.02em; }
+    p { font-size: 15px; color: #a1a1aa; line-height: 1.6; margin: 0 0 24px; }
+    .btn { display: block; padding: 18px 32px; background-color: #f43f5e; color: #ffffff !important; text-decoration: none; border-radius: 14px; font-size: 14px; font-weight: 800; text-align: center; box-shadow: 0 10px 20px rgba(244,63,94,0.2); }
+    .footer { padding: 32px 40px; background-color: rgba(255,255,255,0.02); text-align: center; border-top: 1px solid #18181b; }
+    .footer-text { font-size: 11px; color: #3f3f46; margin: 0; }
+    .logo-icon { width: 32px; height: 32px; background-color: #f43f5e; border-radius: 10px; display: inline-block; margin-bottom: 24px; line-height: 32px; color: white; font-weight: 900; font-size: 18px; text-align: center; }
+  </style>
+</head>
+<body>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #000000;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table class="main-table" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="content-cell">
+              <div class="logo-icon">V</div>
+              <span class="eyebrow">Access Granted</span>
+              <h1>Welcome to the arena.</h1>
+              <p>Hello ${reg.teamName} team lead,</p>
+              <p>Your registration for <strong style="color: #ffffff;">${event.name}</strong> has been officially approved. The arena is now open for your team.</p>
+              <p>Access the live mission portal to track the timeline, view the synchronized timer, and prepare for the build phase.</p>
+              
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 40px;">
+                <tr>
+                  <td align="center">
+                    <a href="${liveEventUrl}" class="btn">Enter Live Status Portal</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="footer">
+              <p class="footer-text">© ${new Date().getFullYear()} DevHack. Automated Event Operations.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
                 `,
             };
 
