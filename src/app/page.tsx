@@ -85,7 +85,7 @@ export default function LandingPage() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
             </Link>
             <Link
-              href="/organizer/dashboard"
+              href="/organizer/login"
               className="w-full sm:w-auto px-8 py-4 bg-transparent border border-zinc-800 text-zinc-400 font-medium text-xs md:text-sm rounded-full hover:border-violet-500/50 hover:text-white transition-all duration-300 flex items-center justify-center gap-3 group backdrop-blur-sm"
             >
               <Zap className="w-4 h-4 text-zinc-600 group-hover:text-violet-400 transition-colors duration-300" />
