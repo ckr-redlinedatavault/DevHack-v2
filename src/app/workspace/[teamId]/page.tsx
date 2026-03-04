@@ -617,51 +617,70 @@ function NotesModule({ teamId, initialNotes }: { teamId: string, initialNotes: a
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Project Notes</h2>
-                <Button onClick={createNote} disabled={isCreating} className="bg-indigo-600 hover:bg-indigo-500 rounded-xl flex items-center gap-2">
+        <div className="flex flex-col h-[calc(100vh-12rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex justify-between items-center mb-6 shrink-0">
+                <div>
+                    <h2 className="text-2xl font-bold">Project Notes</h2>
+                    <p className="text-zinc-500 text-sm mt-1">Brainstorming, architecture, and meeting logs.</p>
+                </div>
+                <Button onClick={createNote} disabled={isCreating} className="bg-white text-black hover:bg-zinc-200 rounded-lg h-10 px-6 font-medium transition-all shadow-none flex items-center gap-2">
                     {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} New Note
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <div className="lg:col-span-1 space-y-2 max-h-[600px] overflow-y-auto pr-2">
-                    {notes?.map((note) => (
-                        <div key={note.id} onClick={() => setActiveNoteId(note.id)} className="cursor-pointer">
-                            <SidebarNote title={note.title} date="Updated recently" active={activeNoteId === note.id} />
+            <div className="flex flex-1 gap-6 overflow-hidden">
+                {/* Sidebar Menu */}
+                <div className="w-64 shrink-0 flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar">
+                    {notes?.map((note) => {
+                        const isActive = activeNoteId === note.id;
+                        return (
+                            <button
+                                key={note.id}
+                                onClick={() => setActiveNoteId(note.id)}
+                                className={`w-full text-left px-4 py-3 rounded-xl transition-all border ${isActive ? 'bg-[#18181b] border-[#3f3f46] shadow-sm' : 'bg-transparent border-transparent hover:bg-[#121214] hover:border-[#27272a]'}`}
+                            >
+                                <p className={`text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-zinc-400'}`}>{note.title}</p>
+                                <p className="text-[10px] uppercase tracking-wider text-zinc-600 mt-1 font-mono">Updated</p>
+                            </button>
+                        );
+                    })}
+                    {(!notes || notes.length === 0) && (
+                        <div className="flex flex-col items-center justify-center p-6 text-center border border-dashed border-[#27272a] rounded-xl mt-4">
+                            <p className="text-zinc-500 text-xs font-semibold uppercase tracking-widest">Empty</p>
                         </div>
-                    ))}
-                    {(!notes || notes.length === 0) && <p className="text-zinc-600 text-sm p-4 text-center">No notes created.</p>}
+                    )}
                 </div>
-                <div className="lg:col-span-3">
-                    <Card className="bg-zinc-900/20 border-zinc-800 min-h-[500px] rounded-3xl p-8 space-y-6">
-                        {activeNote ? (
-                            <div className="space-y-6 flex flex-col h-full">
-                                <div className="flex justify-between items-start border-b border-zinc-800 pb-6 group">
-                                    <input
-                                        value={activeNote.title}
-                                        onChange={(e) => updateNote(activeNote.id, { title: e.target.value })}
-                                        className="text-3xl font-bold bg-transparent border-none focus:ring-0 focus:outline-none w-full text-white"
-                                        placeholder="Note Title"
-                                    />
-                                    <button onClick={() => deleteNote(activeNote.id)} className="text-zinc-600 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <Trash2 className="w-5 h-5" />
-                                    </button>
-                                </div>
-                                <textarea
-                                    value={activeNote.content}
-                                    onChange={(e) => updateNote(activeNote.id, { content: e.target.value })}
-                                    className="w-full h-full min-h-[400px] bg-transparent border-none focus:ring-0 focus:outline-none resize-none text-zinc-400 leading-relaxed text-base"
-                                    placeholder="Start writing..."
+
+                {/* Editor Area */}
+                <div className="flex-1 bg-[#121214] border border-[#27272a] rounded-2xl overflow-hidden flex flex-col">
+                    {activeNote ? (
+                        <div className="flex flex-col h-full">
+                            <div className="flex justify-between items-center border-b border-[#27272a] px-8 py-6 group bg-[#18181b]/50">
+                                <input
+                                    value={activeNote.title}
+                                    onChange={(e) => updateNote(activeNote.id, { title: e.target.value })}
+                                    className="text-2xl font-bold bg-transparent border-none focus:ring-0 focus:outline-none w-full text-zinc-100 placeholder:text-zinc-700"
+                                    placeholder="Note Title"
                                 />
+                                <button onClick={() => deleteNote(activeNote.id)} className="w-8 h-8 flex items-center justify-center rounded-lg text-zinc-600 hover:bg-rose-500/10 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100 shrink-0">
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
                             </div>
-                        ) : (
-                            <div className="flex items-center justify-center min-h-[400px] text-zinc-600">
-                                Select a note or create a new one.
+                            <textarea
+                                value={activeNote.content}
+                                onChange={(e) => updateNote(activeNote.id, { content: e.target.value })}
+                                className="w-full flex-1 bg-transparent border-none focus:ring-0 focus:outline-none resize-none text-zinc-300 leading-relaxed text-sm p-8 custom-scrollbar"
+                                placeholder="Start writing your brilliant ideas here..."
+                            />
+                        </div>
+                    ) : (
+                        <div className="flex-1 flex flex-col items-center justify-center text-zinc-500">
+                            <div className="w-16 h-16 rounded-2xl bg-[#18181b] border border-[#27272a] shadow-inner flex items-center justify-center mb-4">
+                                <span className="text-zinc-700 text-2xl font-bold">~</span>
                             </div>
-                        )}
-                    </Card>
+                            <p className="text-sm font-medium">Select a note or create a new one.</p>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
