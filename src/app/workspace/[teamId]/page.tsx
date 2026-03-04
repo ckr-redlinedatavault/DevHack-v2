@@ -30,7 +30,16 @@ import {
     Loader2,
     ArrowRight,
     Save,
-    X
+    X,
+    LogOut,
+    Wrench,
+    Bot,
+    Sparkles,
+    Heart,
+    Terminal,
+    Boxes,
+    Cpu,
+    Code
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +56,8 @@ const MODULES = [
     { id: "submission", label: "Submission", icon: <Globe className="w-4 h-4" /> },
     { id: "members", label: "Members", icon: <Users className="w-4 h-4" /> },
     { id: "problem-statements", label: "Problem Statements", icon: <ClipboardList className="w-4 h-4" /> },
+    { id: "browse-tools", label: "Browse Tools", icon: <Wrench className="w-4 h-4" /> },
+    { id: "llm", label: "LLM AI", icon: <Bot className="w-4 h-4" /> },
 ];
 
 export default function WorkspacePage({ params: paramsPromise }: { params: Promise<{ teamId: string }> }) {
@@ -172,8 +183,13 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
                         </div>
                         {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-zinc-500" />}
                     </button>
-                    <button className="flex items-center gap-3 px-4 py-2 w-full text-zinc-500 hover:text-rose-400 text-sm transition-colors">
-                        <Trash2 className="w-4 h-4" /> Leave Team
+
+                    <button
+                        onClick={() => window.location.href = '/dashboard'}
+                        className="w-full h-11 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-rose-600/10 flex items-center justify-center gap-2 group"
+                    >
+                        <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[10px] uppercase tracking-widest leading-none">Leave Team</span>
                     </button>
                 </div>
             </aside>
@@ -228,6 +244,8 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
                     {activeModule === "submission" && <SubmissionModule teamId={teamId} initialSubmission={team.submission} />}
                     {activeModule === "members" && <MembersModule team={team} copyInvite={copyInvite} copied={copied} />}
                     {activeModule === "problem-statements" && <ProblemStatementsModule teamId={teamId} initialProblems={team.problemStatements || []} />}
+                    {activeModule === "browse-tools" && <BrowseToolsModule />}
+                    {activeModule === "llm" && <LLMModule />}
                 </div>
             </main>
         </div>
@@ -1482,6 +1500,184 @@ function MembersModule({ team: initialTeam, copyInvite, copied }: { team: any, c
     );
 }
 
+
+
+function BrowseToolsModule() {
+    const [activeCategory, setActiveCategory] = useState("All");
+
+    const tools = [
+        // Core Vibe Coding Tools
+        { name: "v0 by Vercel", desc: "Generate React / Next.js UI from prompts", url: "https://v0.dev", category: "Core" },
+        { name: "Bolt.new", desc: "Build full stack apps instantly", url: "https://bolt.new", category: "Core" },
+        { name: "Lovable", desc: "Turn ideas into full SaaS apps", url: "https://lovable.dev", category: "Core" },
+        { name: "Replit Agent", desc: "Autonomous coding agent", url: "https://replit.com/ai", category: "Core" },
+        { name: "Cursor", desc: "AI powered VS Code", url: "https://cursor.com", category: "Core" },
+        { name: "Windsurf", desc: "AI programming environment", url: "https://windsurf.dev", category: "Core" },
+        { name: "GitHub Copilot", desc: "AI pair programmer", url: "https://github.com/copilot", category: "Core" },
+
+        // Autonomous AI Coding Agents
+        { name: "Devin AI", desc: "Fully autonomous developer agent", url: "https://cognition.ai", category: "Agents" },
+        { name: "OpenAI Codex", desc: "Code generating AI system", url: "https://openai.com", category: "Agents" },
+        { name: "Claude Code", desc: "AI programming agent", url: "https://claude.ai", category: "Agents" },
+        { name: "Amazon Q Developer", desc: "AI developer assistant for AWS", url: "https://aws.amazon.com/q", category: "Agents" },
+        { name: "Aider", desc: "Terminal based AI coder", url: "https://aider.chat", category: "Agents" },
+        { name: "Smol Developer", desc: "Prompt → full app", url: "https://github.com/smol-ai/developer", category: "Agents" },
+        { name: "Antigravity", desc: "Next-gen agentic coding assistant", url: "https://antigravity.ai", category: "Agents", customLogo: "https://www.google.com/favicon.ico" },
+
+        // AI App / Website Builders
+        { name: "Framer AI", desc: "Prompt → website", url: "https://framer.com", category: "Builders" },
+        { name: "Durable AI", desc: "Build websites instantly", url: "https://durable.co", category: "Builders" },
+        { name: "Webflow AI", desc: "AI design system", url: "https://webflow.com", category: "Builders" },
+        { name: "Builder.ai", desc: "AI assisted product development", url: "https://builder.ai", category: "Builders" },
+        { name: "Bubble", desc: "No-code web app builder", url: "https://bubble.io", category: "Builders" },
+        { name: "TeleportHQ", desc: "UI generation tool", url: "https://teleporthq.io", category: "Builders" },
+
+        // Emerging Vibe Coding Platforms
+        { name: "Base44", desc: "Prompt → SaaS builder", url: "https://base44.com", category: "Emerging" },
+        { name: "Emergent", desc: "Build apps with natural language", url: "https://emergent.sh", category: "Emerging" },
+        { name: "Tempo Labs", desc: "Product design + dev", url: "https://tempo.dev", category: "Emerging" },
+        { name: "Softgen", desc: "Prompt to application", url: "https://softgen.ai", category: "Emerging" },
+        { name: "Meku", desc: "Rapid app generation", url: "https://meku.dev", category: "Emerging" },
+        { name: "Macaly", desc: "Simple prompt-based sites", url: "https://macaly.com", category: "Emerging" },
+
+        // AI Coding Assistants
+        { name: "Tabnine", desc: "AI coding assistant", url: "https://tabnine.com", category: "Assistants" },
+        { name: "Sourcegraph Cody", desc: "Codebase AI helper", url: "https://sourcegraph.com", category: "Assistants" },
+        { name: "JetBrains AI Assistant", desc: "AI integrated in JetBrains IDEs", url: "https://jetbrains.com", category: "Assistants" },
+        { name: "CodeGeeX", desc: "Multi language AI coder", url: "https://codegeex.cn", category: "Assistants" },
+        { name: "Phind", desc: "Developer focused AI", url: "https://phind.com", category: "Assistants" },
+
+        // Experimental AI Dev Agents
+        { name: "GPT Engineer", desc: "AI builds entire projects", url: "https://gptengineer.app", category: "Experimental" },
+        { name: "MetaGPT", desc: "AI team building software", url: "https://github.com/geekan/MetaGPT", category: "Experimental" },
+        { name: "AutoDev", desc: "Autonomous coding", url: "https://autodev.ai", category: "Experimental" },
+        { name: "OpenDevin", desc: "Autonomous dev agent", url: "https://all-hands.ai", category: "Experimental" },
+        { name: "Devika AI", desc: "Open source AI developer", url: "https://github.com/stitionai/devika", category: "Experimental" },
+
+        // Special
+        { name: "AI Studio", desc: "Experimental AI development playground", url: "https://aistudio.google.com", category: "Experimental" },
+    ];
+
+    const categories = ["All", "Core", "Agents", "Builders", "Emerging", "Assistants", "Experimental"];
+    const filteredTools = activeCategory === "All" ? tools : tools.filter(t => t.category === activeCategory);
+
+    return (
+        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8">
+                <div className="space-y-2">
+                    <h2 className="text-3xl font-semibold text-white tracking-tight">Browse Tools</h2>
+                    <p className="text-zinc-500 text-sm uppercase tracking-widest font-medium">The complete vibe coding ecosystem at your fingertips.</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveCategory(cat)}
+                            className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 ${activeCategory === cat
+                                ? 'bg-white text-black border-white shadow-lg shadow-white/10'
+                                : 'bg-transparent text-zinc-500 border-white/5 hover:border-white/20 hover:text-zinc-300'}`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+                {filteredTools.map((tool, i) => (
+                    <div
+                        key={tool.name}
+                        onClick={() => window.open(tool.url, '_blank')}
+                        className="p-3.5 rounded-xl bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 hover:bg-[#18181b] transition-all cursor-pointer group relative overflow-hidden flex flex-col h-full animate-in fade-in zoom-in-95 duration-500"
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center group-hover:scale-110 transition-all shadow-2xl overflow-hidden p-2">
+                                <img
+                                    src={tool.customLogo || `https://www.google.com/s2/favicons?domain=${new URL(tool.url).hostname}&sz=128`}
+                                    alt={tool.name}
+                                    className="w-full h-full object-contain"
+                                    onError={(e) => {
+                                        if (!tool.customLogo) {
+                                            (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${tool.name}&background=6366f1&color=fff`;
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <span className="text-[6.5px] font-bold text-zinc-500 tracking-wider bg-zinc-900/50 px-1.5 py-0.5 rounded-md border border-white/5 group-hover:text-white transition-colors">
+                                {tool.category}
+                            </span>
+                        </div>
+
+                        <div className="space-y-1 flex-1">
+                            <h3 className="text-[11px] font-medium text-white tracking-tight group-hover:text-indigo-400 transition-colors">{tool.name}</h3>
+                            <p className="text-zinc-500 text-[9px] leading-tight font-normal line-clamp-2">
+                                {tool.desc}
+                            </p>
+                        </div>
+
+                        <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0 text-white">
+                            <span className="text-[7.5px] font-medium tracking-tight text-indigo-400">Launch Tool</span>
+                            <ExternalLink className="w-2.5 h-2.5" />
+                        </div>
+
+                        <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100" />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function LLMModule() {
+    return (
+        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-700 h-[calc(100vh-12rem)] flex flex-col">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-3xl font-semibold text-white tracking-tight">LLM Intelligence</h2>
+                    <p className="text-zinc-500 text-sm mt-1 uppercase tracking-widest font-medium">AI-powered workspace co-pilot.</p>
+                </div>
+                <div className="px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 rounded-full flex items-center gap-2">
+                    <Sparkles className="w-3 h-3 text-indigo-400" />
+                    <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Grok x GPT-4o</span>
+                </div>
+            </div>
+
+            <div className="flex-1 bg-[#121214] border border-[#27272a] rounded-[2.5rem] p-8 flex flex-col relative overflow-hidden">
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6 max-w-lg mx-auto">
+                    <div className="w-20 h-20 rounded-[2.5rem] bg-black border border-white/5 flex items-center justify-center shadow-2xl shadow-indigo-500/10 mb-2">
+                        <Bot className="w-10 h-10 text-white" />
+                    </div>
+                    <div className="space-y-2">
+                        <h3 className="text-2xl font-semibold text-white">How can I assist your team today?</h3>
+                        <p className="text-zinc-500 text-sm leading-relaxed">
+                            I can help you debug code, draft documentation, or research problem statements directly from your workspace.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-6">
+                        {["Draft project readme", "Analyze problem statement", "Fix react bug", "Generate tech stack"].map((p, i) => (
+                            <button key={i} className="p-4 rounded-2xl bg-black/40 border border-[#27272a] hover:border-white/10 text-zinc-400 text-xs font-medium hover:text-white transition-all text-left">
+                                {p}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-8 relative pt-2">
+                    <input
+                        className="w-full bg-black border border-[#27272a] focus:border-white/20 rounded-2xl h-16 px-8 text-sm outline-none transition-all placeholder:text-zinc-700"
+                        placeholder="Message AI Assistant..."
+                    />
+                    <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-xl flex items-center justify-center text-black hover:bg-zinc-200 transition-all">
+                        <ArrowRight className="w-4 h-4" />
+                    </button>
+                </div>
+
+                <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 blur-[120px] -z-0" />
+            </div>
+        </div>
+    );
+}
 
 /* Helpers */
 
