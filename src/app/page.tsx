@@ -1,139 +1,145 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Zap, Globe, Shield, Cpu } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowRight, Zap, Code2, ShieldAlert, Activity } from "lucide-react";
 import Image from "next/image";
 
 export default function LandingPage() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-rose-500/30 font-sans tracking-tight">
-      {/* Minimal Header */}
-      <nav className={`fixed top-0 w-full z-[100] transition-all duration-700 ${scrolled ? "py-4 bg-black/40 backdrop-blur-2xl border-b border-white/5" : "py-10 bg-transparent"}`}>
-        <div className="max-w-5xl mx-auto px-8 flex items-center justify-between">
-          <div className="flex items-center">
-            <Image
-              src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png"
-              alt="DevHack Logo"
-              width={160}
-              height={40}
-              className="h-10 w-auto object-contain brightness-125 hover:scale-105 transition-transform duration-500"
-            />
-          </div>
+    <div className="h-[100dvh] w-full bg-[#030303] text-zinc-300 selection:bg-violet-500/30 font-sans font-light overflow-hidden flex flex-col relative">
 
-          <div className="flex items-center gap-8">
-            <Link href="/login" className="text-[11px] font-black text-zinc-500 hover:text-white transition-colors uppercase tracking-[0.2em]">
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="px-6 py-2.5 bg-white text-black text-[11px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-rose-500 hover:text-white transition-all shadow-xl"
-            >
-              Open Access
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* 1. Architectural Background Effects */}
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
-      <main className="relative pt-20">
-        {/* Hero / Vision Body */}
-        <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-6 text-center">
-          {/* Atmospheric Glows */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-500/5 blur-[140px] rounded-full -z-10 animate-pulse-slow" />
+      {/* Radial Vignette to fade grid edges */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030303_100%)] pointer-events-none" />
 
-          <div className="max-w-4xl mx-auto space-y-12 relative z-10">
-            <div className="inline-flex py-1.5 px-4 rounded-full bg-white/[0.03] border border-white/5 text-zinc-500 text-[10px] font-black uppercase tracking-[0.4em] backdrop-blur-md">
-              Operational Status: Active
-            </div>
+      {/* Deep Violet Volumetric Glows */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-violet-600/10 blur-[140px] rounded-full mix-blend-screen" />
+        <div className="absolute top-[40%] -left-[20%] w-[40vw] h-[40vw] bg-fuchsia-600/5 blur-[120px] rounded-full mix-blend-screen" />
+      </div>
 
-            <div className="space-y-6">
-              <h1 className="text-6xl md:text-[100px] font-black tracking-tighter leading-[0.9] text-white">
-                Build the<br />
-                <span className="text-zinc-800">unbuildable.</span>
-              </h1>
-              <p className="max-w-xl mx-auto text-lg md:text-xl text-zinc-500 font-medium leading-relaxed italic opacity-70">
-                The high-performance workspace for elite hackathon teams. Precision engineered for speed.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
-              <Link
-                href="/register"
-                className="w-full sm:w-auto px-12 py-6 bg-rose-500 text-white font-black text-xs uppercase tracking-[0.3em] rounded-[2rem] hover:bg-white hover:text-black transition-all shadow-2xl shadow-rose-500/20 flex items-center justify-center gap-3 group"
-              >
-                Start Mission
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/organizer/login"
-                className="w-full sm:w-auto px-12 py-6 bg-zinc-950/40 border border-white/5 text-zinc-500 font-black text-xs uppercase tracking-[0.3em] rounded-[2rem] hover:bg-white/5 transition-all flex items-center justify-center gap-3"
-              >
-                <Zap className="w-4 h-4 text-rose-500" />
-                Organizer Hub
-              </Link>
-            </div>
-          </div>
-
-          {/* Simple Feature Row (Single Page Look) */}
-          <div className="mt-40 grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto w-full px-8 opacity-40 hover:opacity-100 transition-opacity duration-700">
-            <div className="flex items-center gap-4 group cursor-default">
-              <div className="w-px h-8 bg-rose-500 group-hover:h-12 transition-all duration-500" />
-              <div className="text-left">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-white">Live Sync</h3>
-                <p className="text-[11px] text-zinc-600 font-bold uppercase tracking-wider">0ms Latency Relay</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 group cursor-default">
-              <div className="w-px h-8 bg-zinc-800 group-hover:bg-rose-500 group-hover:h-12 transition-all duration-500" />
-              <div className="text-left">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-white">Vaulted Docs</h3>
-                <p className="text-[11px] text-zinc-600 font-bold uppercase tracking-wider">Encrypted Workspace</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 group cursor-default">
-              <div className="w-px h-8 bg-zinc-800 group-hover:bg-rose-500 group-hover:h-12 transition-all duration-500" />
-              <div className="text-left">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-white">Telemetry</h3>
-                <p className="text-[11px] text-zinc-600 font-bold uppercase tracking-wider">Live Rank Sync</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Final Call */}
-        <section className="py-40 px-6 border-t border-white/5 text-center">
+      {/* 2. Static Premium Header */}
+      <header className="flex-none w-full px-6 md:px-12 py-8 flex items-center justify-between z-50 max-w-[90rem] mx-auto relative">
+        <div className="flex items-center">
           <Image
             src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png"
             alt="DevHack Logo"
-            width={240}
-            height={64}
-            className="h-16 mx-auto mb-10 opacity-20 hover:opacity-100 transition-opacity duration-1000 grayscale"
+            width={180}
+            height={48}
+            priority
+            className="h-9 md:h-11 w-auto object-contain brightness-150 contrast-125 opacity-100 drop-shadow-[0_0_15px_rgba(139,92,246,0.2)]"
           />
-          <Link href="/register" className="text-[11px] font-black text-rose-500 uppercase tracking-[0.5em] hover:tracking-[0.8em] transition-all">
-            Execute Genesis Protocol
+        </div>
+
+        <div className="flex items-center gap-8">
+          <Link
+            href="/login"
+            className="text-xs font-medium text-zinc-500 hover:text-white transition-colors tracking-wide"
+          >
+            Log in
           </Link>
-        </section>
+          <Link
+            href="/register"
+            className="px-6 py-2.5 bg-white/5 border border-white/10 text-zinc-200 text-xs font-medium rounded-full hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300 backdrop-blur-md"
+          >
+            Start Here
+          </Link>
+        </div>
+      </header>
+
+      {/* 3. Main Center Content (Locked to Viewport) */}
+      <main className="flex-1 relative flex flex-col justify-center px-6 md:px-12 w-full max-w-[90rem] mx-auto z-10">
+        <div className="space-y-10 w-full max-w-3xl">
+
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full border border-violet-500/20 bg-violet-500/[0.05] backdrop-blur-md">
+            <div className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse" />
+            <span className="text-violet-200/80 text-[10px] md:text-xs tracking-[0.2em] font-medium uppercase">
+              System Active
+            </span>
+          </div>
+
+          {/* Hero Typography */}
+          <div className="space-y-6">
+            <h1 className="text-[3.5rem] md:text-[5.5rem] lg:text-[6.5rem] font-light tracking-tighter leading-[0.95] text-white">
+              Build the <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 via-zinc-400 to-violet-500/50">
+                unbuildable.
+              </span>
+            </h1>
+            <p className="max-w-md text-sm md:text-base text-zinc-400 font-light leading-relaxed tracking-wide">
+              The high-performance workspace for elite hackathon teams. Precision engineered for absolute speed.
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-4">
+            <Link
+              href="/dashboard"
+              className="w-full sm:w-auto px-8 py-4 bg-white text-black font-medium text-xs md:text-sm rounded-full hover:bg-zinc-200 transition-all flex items-center justify-center gap-3 group shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(139,92,246,0.3)]"
+            >
+              Start Mission
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-300" />
+            </Link>
+            <Link
+              href="/organizer/dashboard"
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border border-zinc-800 text-zinc-400 font-medium text-xs md:text-sm rounded-full hover:border-violet-500/50 hover:text-white transition-all duration-300 flex items-center justify-center gap-3 group backdrop-blur-sm"
+            >
+              <Zap className="w-4 h-4 text-zinc-600 group-hover:text-violet-400 transition-colors duration-300" />
+              Organizer Panel
+            </Link>
+          </div>
+
+          {/* Premium Features Row */}
+          <div className="pt-12 md:pt-20 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 opacity-80 hover:opacity-100 transition-opacity duration-700">
+            {/* Feature 1 */}
+            <div className="flex items-start gap-4 group">
+              <div className="mt-1 p-1.5 rounded-md bg-zinc-900 border border-zinc-800 group-hover:border-violet-500/30 group-hover:bg-violet-500/10 transition-colors">
+                <Activity className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400" />
+              </div>
+              <div className="space-y-1 text-left">
+                <h3 className="text-xs font-medium text-zinc-200 tracking-wide">Live Sync</h3>
+                <p className="text-[11px] text-zinc-600 font-light">0ms latency relay</p>
+              </div>
+            </div>
+            {/* Feature 2 */}
+            <div className="flex items-start gap-4 group">
+              <div className="mt-1 p-1.5 rounded-md bg-zinc-900 border border-zinc-800 group-hover:border-violet-500/30 group-hover:bg-violet-500/10 transition-colors">
+                <ShieldAlert className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400" />
+              </div>
+              <div className="space-y-1 text-left">
+                <h3 className="text-xs font-medium text-zinc-200 tracking-wide">Vaulted Docs</h3>
+                <p className="text-[11px] text-zinc-600 font-light">Encrypted workspace</p>
+              </div>
+            </div>
+            {/* Feature 3 */}
+            <div className="flex items-start gap-4 group">
+              <div className="mt-1 p-1.5 rounded-md bg-zinc-900 border border-zinc-800 group-hover:border-violet-500/30 group-hover:bg-violet-500/10 transition-colors">
+                <Code2 className="w-3.5 h-3.5 text-zinc-500 group-hover:text-violet-400" />
+              </div>
+              <div className="space-y-1 text-left">
+                <h3 className="text-xs font-medium text-zinc-200 tracking-wide">Telemetry</h3>
+                <p className="text-[11px] text-zinc-600 font-light">Live rank sync</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </main>
 
-      {/* Simple Minimal Footer */}
-      <footer className="py-12 border-t border-white/5 px-8 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40 hover:opacity-100 transition-opacity duration-500">
-        <p className="text-[10px] font-black text-zinc-700 uppercase tracking-[0.4em]">
-          © 2026 DevHack Platform. All systems operational.
-        </p>
-        <div className="flex items-center gap-10 text-[10px] font-black text-zinc-800 uppercase tracking-widest">
-          <a href="#" className="hover:text-rose-500 transition-colors">Twitter</a>
-          <a href="#" className="hover:text-rose-500 transition-colors">Docs</a>
-          <a href="#" className="hover:text-rose-500 transition-colors">Privacy</a>
+      {/* 4. Static Minimal Footer */}
+      <footer className="flex-none w-full px-6 md:px-12 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] text-zinc-600 font-light z-50 max-w-[90rem] mx-auto border-t border-white/[0.03]">
+        <p className="tracking-wide">© 2026 DevHack Platform. Systems nominal.</p>
+        <div className="flex items-center gap-8">
+          <Link href="#" className="hover:text-violet-400 transition-colors tracking-wide">Twitter</Link>
+          <Link href="#" className="hover:text-violet-400 transition-colors tracking-wide">Documentation</Link>
+          <Link href="#" className="hover:text-violet-400 transition-colors tracking-wide">Privacy</Link>
         </div>
       </footer>
+
     </div>
   );
 }
