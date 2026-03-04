@@ -11,8 +11,15 @@ export default function JoinTeamPreviewPage() {
 
     const handleJoin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (inviteCode.trim()) {
-            router.push(`/join/${inviteCode.trim()}`);
+        let code = inviteCode.trim();
+
+        // Extract code if user pasted a full URL link (e.g. https://website.com/join/XYZ)
+        if (code.includes("/join/")) {
+            code = code.split("/join/").pop() || code;
+        }
+
+        if (code) {
+            router.push(`/join/${code}`);
         }
     };
 
