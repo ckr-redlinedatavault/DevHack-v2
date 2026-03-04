@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Public paths that don't need auth
-    const publicPaths = ["/", "/login", "/register"];
+    const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
     const isPublicPath = publicPaths.includes(pathname);
 
     // If no userId and trying to access a protected path, redirect to login
