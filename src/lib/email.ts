@@ -24,6 +24,11 @@ export async function sendInviteEmail(
   const inviteLink = `${baseUrl}/join/${inviteCode}`;
   const fromEmail = process.env.EMAIL_FROM || "DevHack <onboarding@resend.dev>";
 
+  if (!process.env.RESEND_API_KEY) {
+    console.error("ERROR: RESEND_API_KEY is missing. Emails cannot be sent.");
+    return { success: false, error: new Error("RESEND_API_KEY is missing") };
+  }
+
   console.log(`Attempting to send email to ${toEmail} from ${fromEmail}`);
 
   try {
