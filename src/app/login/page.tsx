@@ -37,7 +37,7 @@ export default function LoginPage() {
                 const data = await res.json();
                 setError(data.message || "Invalid credentials");
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError("Failed to connect to server");
         } finally {
             setIsLoading(false);

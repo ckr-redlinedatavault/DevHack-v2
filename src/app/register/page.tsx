@@ -38,7 +38,7 @@ export default function RegisterPage() {
                 const data = await res.json();
                 setError(data.message || "Something went wrong");
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError("Failed to connected to server");
         } finally {
             setIsLoading(false);

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Zap, Globe, Shield, Cpu } from "lucide-react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -19,9 +20,11 @@ export default function LandingPage() {
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-700 ${scrolled ? "py-4 bg-black/40 backdrop-blur-2xl border-b border-white/5" : "py-10 bg-transparent"}`}>
         <div className="max-w-5xl mx-auto px-8 flex items-center justify-between">
           <div className="flex items-center">
-            <img
+            <Image
               src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png"
               alt="DevHack Logo"
+              width={160}
+              height={40}
               className="h-10 w-auto object-contain brightness-125 hover:scale-105 transition-transform duration-500"
             />
           </div>
@@ -107,9 +110,11 @@ export default function LandingPage() {
 
         {/* Final Call */}
         <section className="py-40 px-6 border-t border-white/5 text-center">
-          <img
+          <Image
             src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png"
             alt="DevHack Logo"
+            width={240}
+            height={64}
             className="h-16 mx-auto mb-10 opacity-20 hover:opacity-100 transition-opacity duration-1000 grayscale"
           />
           <Link href="/register" className="text-[11px] font-black text-rose-500 uppercase tracking-[0.5em] hover:tracking-[0.8em] transition-all">
