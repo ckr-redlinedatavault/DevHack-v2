@@ -127,13 +127,22 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
     return (
         <div className="min-h-screen bg-[#09090b] text-white flex selection:bg-indigo-500/30">
             {/* Sidebar */}
-            <aside className="w-64 border-r border-white/5 bg-black flex flex-col fixed inset-y-0 z-50 transition-all">
-                <div className="p-6">
-                    <div className="flex items-center gap-3 px-2 mb-8">
-                        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-600/30">D</div>
-                        <div className="overflow-hidden">
-                            <p className="font-bold text-sm truncate uppercase tracking-tight">{team.name}</p>
-                            <p className="text-[10px] text-zinc-500 truncate font-mono tracking-widest">v1.0.0</p>
+            <aside className="w-72 border-r border-white/5 bg-black flex flex-col fixed inset-y-0 z-50 transition-all">
+                <div className="">
+                    <div className="flex flex-col items-center pt-2 pb-8 px-4 border-b border-white/5">
+                        <div className="w-48 h-32 flex items-center justify-center">
+                            <img
+                                src="https://ik.imagekit.io/dypkhqxip/Screenshot_2026-03-04_at_20.33.46-removebg-preview.png"
+                                alt="Logo"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+
+                        <div className="mt-1 text-center w-full">
+                            <h1 className="font-bold text-sm text-white uppercase tracking-[0.2em] truncate px-2">
+                                {team.name}
+                            </h1>
+                            <p className="text-[9px] text-indigo-400 font-mono tracking-[0.4em] mt-0.5 opacity-80 uppercase font-black">Workspace</p>
                         </div>
                     </div>
 
@@ -170,28 +179,42 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
             </aside>
 
             {/* Main Area */}
-            <main className="flex-1 ml-64 min-h-screen bg-[#09090b]">
-                {/* Top Header */}
-                <header className="h-16 border-b border-white/5 px-8 flex items-center justify-between bg-black/40 backdrop-blur-xl sticky top-0 z-40">
-                    <div className="flex items-center gap-2">
-                        <span className="text-zinc-500 text-sm font-medium">Workspace</span>
-                        <ChevronRight className="w-4 h-4 text-zinc-700" />
-                        <span className="text-white text-sm font-bold uppercase tracking-widest">{activeModule}</span>
+            <main className="flex-1 ml-72 min-h-screen bg-[#09090b]">
+                {/* Top Header - Lean & Minimal */}
+                <header className="h-16 border-b border-white/5 px-8 flex items-center justify-between bg-black sticky top-0 z-40">
+                    <div className="flex items-center gap-3">
+                        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Workspace</span>
+                        <div className="w-[1px] h-3 bg-zinc-800" />
+                        <span className="text-[11px] font-bold text-white uppercase tracking-widest">{activeModule.replace('-', ' ')}</span>
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <div className="relative group hidden md:block">
-                            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-indigo-400 transition-colors" />
-                            <Input className="w-64 bg-zinc-900/50 border-zinc-800 focus:border-indigo-500 pl-10 h-9 rounded-full text-xs" placeholder="Search team assets..." />
+                        <div className="relative group hidden lg:block">
+                            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-600" />
+                            <input
+                                className="w-64 bg-transparent border-none focus:ring-0 text-xs text-zinc-300 placeholder:text-zinc-600 outline-none pl-9"
+                                placeholder="Search..."
+                            />
                         </div>
+
                         <div className="flex items-center gap-4">
-                            <button className="relative text-zinc-400 hover:text-white transition-colors">
-                                <Bell className="w-5 h-5" />
-                                <span className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full border-2 border-[#09090b]" />
+                            <button className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-black hover:bg-zinc-200 transition-colors">
+                                <Bell className="w-4 h-4" />
                             </button>
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-[1px]">
-                                <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-bold text-[10px]">JD</div>
-                            </div>
+
+                            <div className="h-4 w-px bg-zinc-800" />
+
+                            <button className="flex items-center gap-3 group">
+                                <div className="text-right hidden sm:block">
+                                    <p className="text-[10px] font-black text-white uppercase tracking-[0.1em]">
+                                        {team.members?.[0]?.user?.name || "User"}
+                                    </p>
+                                    <p className="text-[8px] font-bold text-zinc-500 uppercase tracking-tighter opacity-60">Admin</p>
+                                </div>
+                                <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-[#27272a] flex items-center justify-center text-[10px] font-bold text-zinc-400 group-hover:border-zinc-500 transition-all">
+                                    {team.members?.[0]?.user?.name?.[0] || "U"}
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </header>
@@ -214,66 +237,126 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
 /* Modules */
 
 function OverviewModule({ team, setActiveModule }: { team: any, setActiveModule: (m: string) => void }) {
+    const [time, setTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const getGreeting = () => {
+        const hour = time.getHours();
+        if (hour < 12) return "Good Morning";
+        if (hour < 17) return "Good Afternoon";
+        return "Good Evening";
+    };
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-8">
-                    <div className="space-y-4">
-                        <h2 className="text-4xl font-bold tracking-tight">{team.projectName}</h2>
-                        <p className="text-zinc-500 text-lg leading-relaxed max-w-2xl">
-                            {team.description || "No description provided."}
-                        </p>
+        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-700 max-w-6xl mx-auto">
+            {/* Project Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8">
+                <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-[0.2em]">{getGreeting()}</span>
+                        <div className="h-1 w-1 rounded-full bg-zinc-800" />
+                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+                    </div>
+                    <h2 className="text-3xl font-semibold text-white tracking-tight">{team.projectName}</h2>
+                    <p className="text-zinc-500 text-sm leading-relaxed max-w-2xl font-medium">
+                        {team.description || "The mission objective for this project is yet to be defined."}
+                    </p>
+                </div>
+                <div className="flex -space-x-2">
+                    {[...Array(team._count?.members || 1)].map((_, i) => (
+                        <div key={i} className="w-8 h-8 rounded-full bg-[#121214] border border-[#27272a] flex items-center justify-center text-[10px] font-medium text-zinc-400">
+                            {String.fromCharCode(65 + i)}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Stats Section */}
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="cursor-pointer group" onClick={() => setActiveModule("submission")}>
+                        <div className="p-6 rounded-2xl bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 transition-all">
+                            <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.1em] mb-2">Hackathon</p>
+                            <div className="flex items-center justify-between">
+                                <p className="text-lg font-medium text-white truncate pr-4">{team.hackathonName}</p>
+                                <Zap className="w-4 h-4 text-amber-500/40 group-hover:text-amber-500 transition-colors" />
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="cursor-pointer" onClick={() => setActiveModule("submission")}>
-                            <StatsCard icon={<Zap className="w-5 h-5 text-amber-400" />} label="Hackathon" value={team.hackathonName} />
-                        </div>
-                        <div className="cursor-pointer" onClick={() => setActiveModule("tasks")}>
-                            <StatsCard icon={<Clock className="w-5 h-5 text-emerald-400" />} label="Status" value="Planning Phase" />
-                        </div>
-                    </div>
-
-                    <Card className="bg-zinc-900/30 border-zinc-800/50 cursor-pointer hover:bg-zinc-900/50 transition-all group" onClick={() => setActiveModule("tasks")}>
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-bold uppercase tracking-widest text-zinc-400">Project Progress</CardTitle>
-                            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:translate-x-1 transition-transform" />
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-xs font-mono uppercase">
-                                    <span className="text-zinc-500">Tasks Complete</span>
-                                    <span className="text-emerald-400">{Math.round((team.tasks?.filter((t: any) => t.status === "DONE").length || 0) / (team.tasks?.length || 1) * 100)}%</span>
+                    <div className="cursor-pointer group" onClick={() => setActiveModule("tasks")}>
+                        <div className="p-6 rounded-2xl bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 transition-all">
+                            <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.1em] mb-2">Project Phase</p>
+                            <div className="flex items-center justify-between">
+                                <p className="text-lg font-medium text-white">Execution</p>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className={`w-3 h-1 rounded-full ${i <= 2 ? 'bg-emerald-500' : 'bg-zinc-800'}`} />
+                                    ))}
                                 </div>
-                                <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden">
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Progress Card */}
+                    <div className="md:col-span-2">
+                        <div className="p-8 rounded-3xl bg-[#121214] border border-[#27272a] space-y-6 relative overflow-hidden group">
+                            <div className="flex items-center justify-between relative z-10">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.1em]">Total Completion</p>
+                                    <h3 className="text-xl font-medium text-white">Project Progress</h3>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-3xl font-semibold text-emerald-500">
+                                        {Math.round((team.tasks?.filter((t: any) => t.status === "DONE").length || 0) / (team.tasks?.length || 1) * 100)}%
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="relative z-10 space-y-3">
+                                <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
                                     <div
-                                        className="h-full bg-emerald-500 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-1000"
+                                        className="h-full bg-emerald-500 rounded-full transition-all duration-1000"
                                         style={{ width: `${Math.round((team.tasks?.filter((t: any) => t.status === "DONE").length || 0) / (team.tasks?.length || 1) * 100)}%` }}
                                     />
                                 </div>
+                                <div className="flex justify-between text-[9px] font-medium text-zinc-600 uppercase tracking-widest">
+                                    <span>Sprint Started</span>
+                                    <span>Review Phase</span>
+                                </div>
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="space-y-6">
-                    <Card className="bg-indigo-600/5 border-indigo-600/20 rounded-3xl overflow-hidden shadow-2xl shadow-indigo-600/5 cursor-pointer hover:bg-indigo-600/10 transition-all group" onClick={() => setActiveModule("members")}>
-                        <CardHeader className="bg-indigo-600/10 p-6 border-b border-indigo-600/10 flex flex-row items-center justify-between">
-                            <CardTitle className="text-sm font-bold flex items-center gap-2 text-indigo-400 uppercase tracking-widest">Team Stats</CardTitle>
-                            <ChevronRight className="w-4 h-4 text-indigo-500 group-hover:translate-x-1 transition-transform" />
-                        </CardHeader>
-                        <CardContent className="p-6 space-y-4">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-indigo-600/20 flex items-center justify-center">
-                                    <Users className="w-5 h-5 text-indigo-400" />
-                                </div>
-                                <div>
-                                    <p className="text-white font-bold">{team._count?.members || 1} Members</p>
-                                    <p className="text-zinc-500 text-xs mt-0.5">Capacity: {team.teamSize} members</p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                {/* Discovery Section */}
+                <div className="flex flex-col gap-6">
+                    <button
+                        onClick={() => setActiveModule("problem-statements")}
+                        className="flex-1 p-8 rounded-3xl bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 transition-all group relative overflow-hidden text-left"
+                    >
+                        <p className="text-[10px] font-medium text-indigo-500 uppercase tracking-[0.2em] mb-3">Discovery</p>
+                        <h3 className="text-xl font-semibold text-white leading-tight">Identify Global<br />Problem Statements</h3>
+                        <div className="mt-8 flex items-center gap-2 text-zinc-500 group-hover:text-white transition-colors">
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Access Engine</span>
+                            <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                        <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all" />
+                    </button>
+
+                    <div className="p-6 rounded-2xl bg-white text-black hover:bg-zinc-100 transition-all cursor-pointer flex items-center justify-between group" onClick={() => setActiveModule("members")}>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40">Collaborators</p>
+                            <p className="text-xl font-bold mt-1">{team._count?.members || 1} <span className="text-zinc-400 font-medium">/ 4</span></p>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center">
+                            <Users className="w-4 h-4" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -702,6 +785,62 @@ function ProblemStatementsModule({ teamId, initialProblems }: { teamId: string, 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [isSaving, setIsSaving] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
+    const [scrapedProblems, setScrapedProblems] = useState<any[]>([]);
+    const [isScraping, setIsScraping] = useState(false);
+    const [showScraped, setShowScraped] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState("relevance");
+
+    const fetchScraped = async () => {
+        setIsScraping(true);
+        setShowScraped(true);
+        try {
+            const res = await fetch("/api/problem-statements/scraper");
+            if (res.ok) {
+                const data = await res.json();
+                setScrapedProblems(data);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsScraping(false);
+        }
+    };
+
+    const filteredScraped = scrapedProblems
+        .filter(p =>
+            p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.organization?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.theme?.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .sort((a, b) => {
+            if (sortBy === "difficulty") return a.difficulty.localeCompare(b.difficulty);
+            if (sortBy === "title") return a.title.localeCompare(b.title);
+            return 0;
+        });
+
+    const addScrapedProblem = async (problem: any) => {
+        setIsSaving(true);
+        try {
+            const res = await fetch(`/api/workspace/${teamId}/problem-statements`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: `[${problem.category}] ${problem.title}`,
+                    description: `${problem.description}\n\nOrganization: ${problem.organization}\nTheme: ${problem.theme}`
+                })
+            });
+            if (res.ok) {
+                const newProblem = await res.json();
+                setProblems([newProblem, ...problems]);
+                setShowScraped(false);
+            }
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const handleSave = async () => {
         if (!title.trim() || !description.trim()) return;
@@ -761,7 +900,140 @@ function ProblemStatementsModule({ teamId, initialProblems }: { teamId: string, 
                     <h2 className="text-2xl font-bold">Problem Statements</h2>
                     <p className="text-zinc-500 text-sm mt-1">Define the core challenges you're tackling in this project.</p>
                 </div>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={async () => {
+                            const res = await fetch(`/api/workspace/${teamId}/problem-statements`);
+                            if (res.ok) setProblems(await res.json());
+                        }}
+                        className="h-10 w-10 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-xl transition-all"
+                    >
+                        <Rocket className="w-4 h-4" />
+                    </Button>
+                    {!showScraped && (
+                        <Button
+                            onClick={fetchScraped}
+                            variant="outline"
+                            className="border-indigo-500/30 bg-indigo-500/5 text-indigo-400 hover:bg-indigo-500/10 hover:border-indigo-500/50 rounded-xl h-10 px-6 font-bold flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(99,102,241,0.1)]"
+                        >
+                            <Search className="w-4 h-4" />
+                            Find Global Problems
+                        </Button>
+                    )}
+                </div>
             </div>
+
+            {showScraped && (
+                <div className="space-y-6 animate-in zoom-in-95 duration-300">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
+                                <Rocket className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-lg">Problem Discovery</h3>
+                                <p className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Curated for Hackathons</p>
+                            </div>
+                        </div>
+                        <Button
+                            variant="ghost"
+                            onClick={() => setShowScraped(false)}
+                            className="text-zinc-500 hover:text-white"
+                        >
+                            <X className="w-5 h-5" />
+                        </Button>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#18181b]/50 border border-[#27272a] p-4 rounded-2xl">
+                        <div className="relative w-full md:w-96">
+                            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                            <input
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full bg-[#121214] border border-[#27272a] focus:border-indigo-500 rounded-xl pl-10 pr-4 py-2 text-sm text-zinc-300 placeholder:text-zinc-600 outline-none transition-all"
+                                placeholder="Search by organization, theme, or title..."
+                            />
+                        </div>
+                        <div className="flex items-center gap-3 w-full md:w-auto">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 whitespace-nowrap">Sort by:</span>
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="bg-[#121214] border border-[#27272a] text-zinc-400 text-xs font-bold rounded-lg px-3 py-2 outline-none focus:border-indigo-500 transition-all w-full"
+                            >
+                                <option value="relevance">Relevance</option>
+                                <option value="title">Alphabetical</option>
+                                <option value="difficulty">Difficulty</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {isScraping ? (
+                        <div className="py-20 flex flex-col items-center justify-center space-y-4 bg-[#121214] border border-[#27272a] rounded-3xl">
+                            <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+                            <p className="text-zinc-400 font-medium animate-pulse">Scraping SIH 2025 problem statements...</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredScraped.map((p) => (
+                                <div key={p.id} className="bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 rounded-3xl p-6 space-y-5 flex flex-col group transition-all relative overflow-hidden shadow-sm hover:shadow-indigo-500/5">
+                                    <div className="flex justify-between items-start">
+                                        <div className="px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
+                                            <p className="text-[9px] font-black uppercase tracking-widest text-indigo-400">{p.category}</p>
+                                        </div>
+                                        <span className={`text-[9px] font-bold uppercase tracking-tighter px-2 py-1 rounded bg-zinc-800 text-zinc-400 border border-white/5`}>
+                                            {p.difficulty}
+                                        </span>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <div className="space-y-1">
+                                            {p.organization && (
+                                                <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest truncate">{p.organization}</p>
+                                            )}
+                                            <h4 className="font-bold text-white text-lg leading-tight group-hover:text-indigo-400 transition-colors">{p.title}</h4>
+                                        </div>
+                                        <p className="text-sm text-zinc-400 leading-relaxed line-clamp-4 min-h-[5em]">
+                                            {p.description}
+                                        </p>
+                                    </div>
+
+                                    {p.theme && (
+                                        <div className="flex items-center gap-2 pt-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{p.theme}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {p.tags.map((t: string) => (
+                                            <span key={t} className="text-[9px] bg-zinc-900 border border-white/5 text-zinc-500 px-2 py-1 rounded font-mono">{t}</span>
+                                        ))}
+                                    </div>
+
+                                    <Button
+                                        onClick={() => addScrapedProblem(p)}
+                                        className="w-full bg-white hover:bg-indigo-50 text-black rounded-2xl font-bold text-sm h-11 mt-auto transition-all shadow-none border-none"
+                                    >
+                                        Adopt This Problem
+                                    </Button>
+
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-[100px] -z-10 group-hover:bg-indigo-500/10 transition-all" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {filteredScraped.length === 0 && !isScraping && (
+                        <div className="py-20 flex flex-col items-center justify-center text-center">
+                            <SearchIcon className="w-8 h-8 text-zinc-700 mb-3" />
+                            <p className="text-zinc-500 font-medium">No results found for "{searchQuery}"</p>
+                            <p className="text-zinc-700 text-xs mt-1">Try searching by organization or theme instead.</p>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* Quick Add Form */}
             <div className="bg-[#121214] border border-[#27272a] focus-within:border-[#3f3f46] transition-colors rounded-2xl overflow-hidden flex flex-col shadow-sm">
@@ -795,8 +1067,8 @@ function ProblemStatementsModule({ teamId, initialProblems }: { teamId: string, 
                     <div key={problem.id} className="bg-[#18181b] border border-[#27272a] hover:border-[#3f3f46] rounded-xl flex flex-col group transition-all relative p-6 space-y-4">
                         <div className="flex items-start justify-between">
                             <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md ${problem.status === "OPEN" ? "bg-rose-500/10 text-rose-500 border border-rose-500/20" :
-                                    problem.status === "IN_PROGRESS" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" :
-                                        "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
+                                problem.status === "IN_PROGRESS" ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" :
+                                    "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
                                 }`}>
                                 {problem.status.replace('_', ' ')}
                             </span>
@@ -815,7 +1087,7 @@ function ProblemStatementsModule({ teamId, initialProblems }: { teamId: string, 
                             </p>
                         </div>
 
-                        <div className="pt-4 flex items-center gap-2">
+                        <div className="pt-4 flex items-center justify-between gap-2 border-t border-white/5">
                             <select
                                 value={problem.status}
                                 onChange={(e) => updateStatus(problem.id, e.target.value)}
@@ -825,6 +1097,18 @@ function ProblemStatementsModule({ teamId, initialProblems }: { teamId: string, 
                                 <option value="IN_PROGRESS">In Progress</option>
                                 <option value="RESOLVED">Resolved</option>
                             </select>
+
+                            {problem.creator && (
+                                <div className="flex items-center gap-1.5 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all">
+                                    <p className="text-[10px] text-zinc-500 font-medium">Added by</p>
+                                    <div className="flex items-center gap-1 bg-zinc-800/50 px-2 py-0.5 rounded-full border border-white/5">
+                                        <div className="w-3 h-3 rounded-full bg-indigo-500 flex items-center justify-center text-[7px] font-bold text-white uppercase">
+                                            {problem.creator.name?.[0] || 'U'}
+                                        </div>
+                                        <p className="text-[9px] font-bold text-zinc-300">{problem.creator.name}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}

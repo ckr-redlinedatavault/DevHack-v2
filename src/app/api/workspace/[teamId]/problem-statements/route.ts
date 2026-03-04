@@ -6,7 +6,11 @@ export async function GET(req: Request, { params }: { params: Promise<{ teamId: 
     const userId = await getUserId();
     if (!userId) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     const { teamId } = await params;
-    const problems = await prisma.problemStatement.findMany({ where: { teamId }, orderBy: { createdAt: "desc" } });
+    const problems = await prisma.problemStatement.findMany({
+        where: { teamId },
+        orderBy: { createdAt: "desc" },
+        include: { creator: { select: { name: true } } }
+    });
     return NextResponse.json(problems);
 }
 
@@ -16,7 +20,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ teamId:
     const { teamId } = await params;
     const { title, description } = await req.json();
     if (!title || !description) return NextResponse.json({ message: "Title and description required" }, { status: 400 });
-    const problem = await prisma.problemStatement.create({ data: { teamId, title, description } });
+    const problem = await prisma.problemStatement.create({
+        data: {
+            teamId,
+            title,
+            description,
+            creatorId: userId
+        },
+        include: { creator: { select: { name: true } } }
+    });
     return NextResponse.json(problem, { status: 201 });
 }
 
