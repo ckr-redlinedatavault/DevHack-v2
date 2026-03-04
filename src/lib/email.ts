@@ -41,75 +41,93 @@ export async function sendInviteEmail(
       to: toEmail,
       subject: `${senderName} invited you to join ${teamName} on DevHack`,
       html: `
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevHack Invite</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; padding: 40px 20px; }
-    .container { max-width: 560px; margin: 0 auto; background: #111113; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; }
-    .header { background: #000; padding: 32px; border-bottom: 1px solid #27272a; display: flex; align-items: center; gap: 12px; }
-    .logo { width: 40px; height: 40px; background: #4f46e5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: white; }
-    .brand { font-size: 20px; font-weight: 800; color: white; letter-spacing: -0.5px; }
-    .body { padding: 40px 32px; }
-    .eyebrow { display: inline-block; padding: 4px 12px; background: rgba(79,70,229,0.1); border: 1px solid rgba(79,70,229,0.2); border-radius: 100px; color: #818cf8; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
-    h1 { font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.3; margin-bottom: 12px; }
-    p { font-size: 14px; color: #71717a; line-height: 1.6; margin-bottom: 16px; }
-    .card { background: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
-    .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .card-row:last-child { margin-bottom: 0; }
-    .card-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #52525b; }
-    .card-value { font-size: 14px; font-weight: 600; color: #e4e4e7; }
-    .invite-code { font-family: monospace; font-size: 22px; font-weight: 900; letter-spacing: 4px; color: #818cf8; background: rgba(79,70,229,0.08); border: 1px dashed rgba(79,70,229,0.3); border-radius: 10px; padding: 14px 20px; text-align: center; margin: 24px 0; }
-    .btn { display: block; width: 100%; padding: 16px; background: #4f46e5; color: white; text-decoration: none; text-align: center; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: -0.3px; margin: 24px 0; }
-    .btn:hover { background: #4338ca; }
-    .divider { border: none; border-top: 1px solid #27272a; margin: 24px 0; }
-    .link-fallback { font-size: 12px; color: #52525b; word-break: break-all; }
-    .link-fallback a { color: #818cf8; text-decoration: none; }
-    .footer { padding: 20px 32px; background: #0c0c0e; border-top: 1px solid #27272a; text-align: center; }
-    .footer p { font-size: 11px; color: #3f3f46; margin: 0; }
+    body { margin: 0; padding: 0; background-color: #09090b; }
+    table { border-collapse: collapse; }
+    .main-table { width: 100%; max-width: 560px; margin: 40px auto; background-color: #111113; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; }
+    .content-cell { padding: 40px 32px; }
+    .eyebrow { display: inline-block; padding: 4px 12px; border-radius: 100px; color: #818cf8; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; background-color: rgba(79,70,229,0.1); border: 1px solid rgba(79,70,229,0.2); }
+    h1 { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.3; margin: 20px 0 12px; }
+    p { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 14px; color: #71717a; line-height: 1.6; margin: 0 0 16px; }
+    .card { background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px 24px; margin: 24px 0; width: 100%; }
+    .invite-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 24px; font-weight: 900; letter-spacing: 4px; color: #818cf8; background-color: rgba(79,70,229,0.08); border: 1px dashed rgba(79,70,229,0.3); border-radius: 10px; padding: 16px; text-align: center; margin: 20px 0; }
+    .btn { display: inline-block; padding: 16px 32px; background-color: #4f46e5; color: #ffffff !important; text-decoration: none; border-radius: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; font-size: 15px; font-weight: 700; text-align: center; }
+    .footer { padding: 24px; background-color: #0c0c0e; border-top: 1px solid #27272a; text-align: center; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">D</div>
-      <div class="brand">DevHack</div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #09090b;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #09090b;">
+    <tr>
+      <td align="center" style="padding: 20px;">
+        <table class="main-table" border="0" cellspacing="0" cellpadding="0">
+          <!-- Header -->
+          <tr>
+            <td style="background-color: #000000; padding: 32px; border-bottom: 1px solid #27272a;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="40" style="padding-right: 12px;">
+                    <div style="width: 40px; height: 40px; background-color: #4f46e5; border-radius: 10px; color: #ffffff; font-family: sans-serif; font-weight: 900; font-size: 18px; text-align: center; line-height: 40px;">D</div>
+                  </td>
+                  <td style="color: #ffffff; font-family: sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">DevHack</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-    <div class="body">
-      <div class="eyebrow">Team Invite</div>
-      <h1>You've been invited to join a hackathon workspace</h1>
-      <p><strong style="color:#e4e4e7">${senderName}</strong> has invited you to collaborate on their DevHack project.</p>
+          <!-- Body -->
+          <tr>
+            <td class="content-cell">
+              <span class="eyebrow">Team Invite</span>
+              <h1>Workspace Invitation</h1>
+              <p>Hello,</p>
+              <p><strong style="color: #e4e4e7;">${senderName}</strong> has invited you to collaborate on <strong style="color: #ffffff;">${teamName}</strong> for the project <strong>${projectName}</strong>.</p>
+              
+              <table class="card" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="padding-bottom: 8px; font-family: sans-serif; font-size: 11px; font-weight: 700; color: #52525b; text-transform: uppercase; letter-spacing: 1px;">Team Name</td>
+                  <td align="right" style="padding-bottom: 8px; font-family: sans-serif; font-size: 14px; font-weight: 600; color: #e4e4e7;">${teamName}</td>
+                </tr>
+                <tr>
+                  <td style="font-family: sans-serif; font-size: 11px; font-weight: 700; color: #52525b; text-transform: uppercase; letter-spacing: 1px;">Project</td>
+                  <td align="right" style="font-family: sans-serif; font-size: 14px; font-weight: 600; color: #e4e4e7;">${projectName}</td>
+                </tr>
+              </table>
 
-      <div class="card">
-        <div class="card-row">
-          <span class="card-label">Team</span>
-          <span class="card-value">${teamName}</span>
-        </div>
-        <div class="card-row">
-          <span class="card-label">Project</span>
-          <span class="card-value">${projectName}</span>
-        </div>
-      </div>
+              <p style="text-align: center; font-family: sans-serif; font-size: 11px; color: #52525b; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 32px; margin-bottom: 8px;">Use this invite code to join</p>
+              <div class="invite-code">${inviteCode}</div>
 
-      <p style="text-align:center; font-size:12px; color:#52525b; margin-bottom:4px;">YOUR INVITE CODE</p>
-      <div class="invite-code">${inviteCode}</div>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 32px; margin-bottom: 32px;">
+                <tr>
+                  <td align="center">
+                    <a href="${inviteLink}" class="btn">Join Workspace Now</a>
+                  </td>
+                </tr>
+              </table>
 
-      <a href="${inviteLink}" class="btn">Join Workspace →</a>
+              <hr style="border: none; border-top: 1px solid #27272a; margin: 32px 0;" />
+              <p style="font-family: sans-serif; font-size: 12px; color: #3f3f46; margin: 0;">Trouble with the button? Copy this link:<br />
+                <a href="${inviteLink}" style="color: #818cf8; text-decoration: none; word-break: break-all;">${inviteLink}</a>
+              </p>
+            </td>
+          </tr>
 
-      <hr class="divider" />
-      <p class="link-fallback">Or copy this link into your browser:<br/><a href="${inviteLink}">${inviteLink}</a></p>
-    </div>
-
-    <div class="footer">
-      <p>If you were not expecting this invite, you can safely ignore this email.</p>
-      <p style="margin-top:6px;">© ${new Date().getFullYear()} DevHack · Built for Hackers</p>
-    </div>
-  </div>
+          <!-- Footer -->
+          <tr>
+            <td class="footer">
+              <p style="margin: 0; font-family: sans-serif; font-size: 11px; color: #3f3f46;">© ${new Date().getFullYear()} DevHack · Built for Hackathon Teams</p>
+              <p style="margin-top: 8px; font-family: sans-serif; font-size: 10px; color: #27272a;">This is an automated invitation. If you didn't expect this, please ignore.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
             `,
