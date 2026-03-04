@@ -39,7 +39,9 @@ import {
     Terminal,
     Boxes,
     Cpu,
-    Code
+    Code,
+    Code2,
+    ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,6 +60,7 @@ const MODULES = [
     { id: "problem-statements", label: "Problem Statements", icon: <ClipboardList className="w-4 h-4" /> },
     { id: "browse-tools", label: "Browse Tools", icon: <Wrench className="w-4 h-4" /> },
     { id: "llm", label: "LLM AI", icon: <Bot className="w-4 h-4" /> },
+    { id: "code-library", label: "Code Library", icon: <Code2 className="w-4 h-4" /> },
 ];
 
 export default function WorkspacePage({ params: paramsPromise }: { params: Promise<{ teamId: string }> }) {
@@ -246,6 +249,7 @@ export default function WorkspacePage({ params: paramsPromise }: { params: Promi
                     {activeModule === "problem-statements" && <ProblemStatementsModule teamId={teamId} initialProblems={team.problemStatements || []} />}
                     {activeModule === "browse-tools" && <BrowseToolsModule />}
                     {activeModule === "llm" && <LLMModule />}
+                    {activeModule === "code-library" && <CodeLibraryModule />}
                 </div>
             </main>
         </div>
@@ -1502,8 +1506,236 @@ function MembersModule({ team: initialTeam, copyInvite, copied }: { team: any, c
 
 
 
+function CodeLibraryModule() {
+    const [activeLangCategory, setActiveLangCategory] = useState("All");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const languages = [
+        // ... same languages array ...
+        // Core Languages
+        { name: "HTML5", desc: "Structure of webpages", url: "https://developer.mozilla.org/en-US/docs/Web/HTML", category: "Core", customLogo: "https://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" },
+        { name: "CSS3", desc: "Styling and layout", url: "https://developer.mozilla.org/en-US/docs/Web/CSS", category: "Core", customLogo: "https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" },
+        { name: "JavaScript", desc: "The language of the web", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", category: "Core", customLogo: "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" },
+        { name: "TypeScript", desc: "Typed superset of JavaScript", url: "https://www.typescriptlang.org", category: "Core" },
+        { name: "Python", desc: "Versatile and easy to learn", url: "https://www.python.org", category: "Core" },
+        { name: "Java", desc: "Enterprise-grade programming", url: "https://www.java.com", category: "Core" },
+        { name: "Go", desc: "Simple, reliable, efficient software", url: "https://go.dev", category: "Core" },
+        { name: "Rust", desc: "Performance, safety, and concurrency", url: "https://www.rust-lang.org", category: "Core" },
+
+        // Frontend Frameworks
+        { name: "React", desc: "UI development powerhouse", url: "https://react.dev", category: "Frontend" },
+        { name: "Next.js", desc: "The React framework for the web", url: "https://nextjs.org", category: "Frontend" },
+        { name: "Vue.js", desc: "The progressive framework", url: "https://vuejs.org", category: "Frontend" },
+        { name: "Angular", desc: "The web development platform", url: "https://angular.io", category: "Frontend" },
+        { name: "Svelte", desc: "Cybernetically enhanced web apps", url: "https://svelte.dev", category: "Frontend" },
+
+        // UI & Styling
+        { name: "Tailwind CSS", desc: "Utility-first CSS framework", url: "https://tailwindcss.com", category: "UI" },
+        { name: "Bootstrap", desc: "Powerful extensible frontend toolkit", url: "https://getbootstrap.com", category: "UI" },
+        { name: "Material UI", desc: "React components for faster development", url: "https://mui.com", category: "UI" },
+        { name: "Shadcn UI", desc: "Modern UI components", url: "https://ui.shadcn.com", category: "UI" },
+        { name: "Chakra UI", desc: "Simple, modular and accessible", url: "https://chakra-ui.com", category: "UI" },
+
+        // Backend Frameworks
+        { name: "Node.js", desc: "JavaScript runtime for backend", url: "https://nodejs.org", category: "Backend" },
+        { name: "Express.js", desc: "REST API development", url: "https://expressjs.com", category: "Backend" },
+        { name: "NestJS", desc: "Structured backend framework", url: "https://nestjs.com", category: "Backend" },
+        { name: "Fastify", desc: "Fast and low overhead web framework", url: "https://www.fastify.io", category: "Backend" },
+        { name: "Django", desc: "Full Python backend framework", url: "https://www.djangoproject.com", category: "Backend" },
+        { name: "FastAPI", desc: "High-performance Python APIs", url: "https://fastapi.tiangolo.com", category: "Backend" },
+
+        // Databases
+        { name: "PostgreSQL", desc: "Advanced SQL database", url: "https://www.postgresql.org", category: "Database" },
+        { name: "MySQL", desc: "Scalable SQL database", url: "https://www.mysql.com", category: "Database" },
+        { name: "SQLite", desc: "Small, fast, self-contained SQL database", url: "https://sqlite.org", category: "Database" },
+        { name: "MongoDB", desc: "Flexible document database", url: "https://www.mongodb.com", category: "Database" },
+        { name: "Firestore", desc: "Google's NoSQL document database", url: "https://firebase.google.com/docs/firestore", category: "Database" },
+        { name: "Cassandra", desc: "Highly-scalable distributed database", url: "https://cassandra.apache.org", category: "Database" },
+
+        // ORM / Database Tools
+        { name: "Prisma", desc: "Next-generation Node.js and TypeScript ORM", url: "https://www.prisma.io", category: "ORM" },
+        { name: "Sequelize", desc: "Promise-based Node.js ORM for SQL", url: "https://sequelize.org", category: "ORM" },
+        { name: "TypeORM", desc: "ORM that can run in multiple platforms", url: "https://typeorm.io", category: "ORM" },
+        { name: "Mongoose", desc: "MongoDB object modeling for Node.js", url: "https://mongoosejs.com", category: "ORM" },
+
+        // API Technologies
+        { name: "REST", desc: "Representational State Transfer", url: "https://restfulapi.net", category: "API" },
+        { name: "GraphQL", desc: "Query language for your API", url: "https://graphql.org", category: "API" },
+        { name: "gRPC", desc: "Modern high-performance RPC framework", url: "https://grpc.io", category: "API" },
+
+        // Authentication Systems
+        { name: "NextAuth.js", desc: "Auth for Next.js apps", url: "https://next-auth.js.org", category: "Auth" },
+        { name: "Clerk", desc: "SaaS user management", url: "https://clerk.com", category: "Auth" },
+        { name: "Auth0", desc: "Enterprise identity platform", url: "https://auth0.com", category: "Auth" },
+        { name: "Firebase Auth", desc: "Google's authentication service", url: "https://firebase.google.com/docs/auth", category: "Auth" },
+
+        // Caching & Search
+        { name: "Redis", desc: "Fast in-memory data store", url: "https://redis.io", category: "Caching" },
+        { name: "Memcached", desc: "Distributed memory object caching system", url: "https://memcached.org", category: "Caching" },
+        { name: "Elasticsearch", desc: "Distributed, RESTful search engine", url: "https://www.elastic.co", category: "Search" },
+        { name: "Meilisearch", desc: "Fast and relevant search engine", url: "https://www.meilisearch.com", category: "Search" },
+        { name: "Algolia", desc: "Powerful search for your apps", url: "https://www.algolia.com", category: "Search" },
+
+        // Message Queues
+        { name: "RabbitMQ", desc: "Widely deployed open source message broker", url: "https://www.rabbitmq.com", category: "Messaging" },
+        { name: "Apache Kafka", desc: "Distributed event streaming platform", url: "https://kafka.apache.org", category: "Messaging" },
+        { name: "BullMQ", desc: "Message queue for Node.js based on Redis", url: "https://bullmq.io", category: "Messaging" },
+
+        // Cloud & Hosting
+        { name: "Vercel", desc: "The frontend cloud for Next.js", url: "https://vercel.com", category: "Cloud" },
+        { name: "Netlify", desc: "Composable web platform", url: "https://www.netlify.com", category: "Cloud" },
+        { name: "AWS", desc: "Scalable cloud infrastructure", url: "https://aws.amazon.com", category: "Cloud" },
+        { name: "Google Cloud", desc: "Cloud computing services", url: "https://cloud.google.com", category: "Cloud" },
+        { name: "Azure", desc: "Enterprise cloud services", url: "https://azure.microsoft.com", category: "Cloud" },
+
+        // DevOps & CI/CD
+        { name: "Docker", desc: "Containerization platform", url: "https://www.docker.com", category: "DevOps" },
+        { name: "Kubernetes", desc: "Container orchestration", url: "https://kubernetes.io", category: "DevOps" },
+        { name: "Terraform", desc: "Infrastructure as Code", url: "https://www.terraform.io", category: "DevOps" },
+        { name: "GitHub Actions", desc: "Automation and CI/CD", url: "https://github.com/features/actions", category: "DevOps" },
+        { name: "GitLab CI", desc: "Integrated CI/CD platform", url: "https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/", category: "DevOps" },
+        { name: "Jenkins", desc: "Extensible open source automation server", url: "https://www.jenkins.io", category: "DevOps" },
+
+        // Monitoring & Analytics
+        { name: "Sentry", desc: "Application monitoring and error tracking", url: "https://sentry.io", category: "Monitoring" },
+        { name: "Datadog", desc: "Monitoring and security for cloud apps", url: "https://www.datadoghq.com", category: "Monitoring" },
+        { name: "Google Analytics", desc: "Web analytics service", url: "https://analytics.google.com", category: "Monitoring" },
+
+        // Payments
+        { name: "Stripe", desc: "Financial infrastructure for the internet", url: "https://stripe.com", category: "Payments" },
+        { name: "Razorpay", desc: "Payment solution for India", url: "https://razorpay.com", category: "Payments" },
+        { name: "PayPal", desc: "Digital wallet and payment service", url: "https://www.paypal.com", category: "Payments" },
+
+        // File Storage
+        { name: "Cloudinary", desc: "Image and video management", url: "https://cloudinary.com", category: "Storage" },
+        { name: "Amazon S3", desc: "Object storage service", url: "https://aws.amazon.com/s3", category: "Storage" },
+        { name: "UploadThing", desc: "Best way to add file uploads to your app", url: "https://uploadthing.com", category: "Storage" },
+    ];
+
+    const categories = ["All", "Core", "Frontend", "UI", "Backend", "Database", "ORM", "API", "Auth", "Caching", "Search", "Messaging", "Cloud", "DevOps", "Monitoring", "Payments", "Storage"];
+
+    // Group categories into logical Tech Stacks
+    const STACKS = [
+        { name: "Languages & Frameworks", categories: ["Core", "Frontend", "UI"] },
+        { name: "Backend & Communication", categories: ["Backend", "API", "Messaging"] },
+        { name: "Data & Performance", categories: ["Database", "ORM", "Caching", "Search"] },
+        { name: "Cloud & Infrastructure", categories: ["Cloud", "DevOps"] },
+        { name: "SaaS Ecosystem", categories: ["Auth", "Monitoring", "Payments", "Storage"] }
+    ];
+
+    const filteredLangs = activeLangCategory === "All" ? languages : languages.filter(l => l.category === activeLangCategory);
+
+    return (
+        <div className="space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-700">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8 relative z-50">
+                <div className="space-y-2">
+                    <h2 className="text-3xl font-semibold text-white tracking-tight">Code Library</h2>
+                    <p className="text-zinc-500 text-sm uppercase tracking-widest font-medium">Core languages and official documentation.</p>
+                </div>
+
+                <div className="relative">
+                    <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-3 px-5 py-2.5 rounded-xl bg-[#121214] border border-[#27272a] hover:border-zinc-500 transition-all text-zinc-400 hover:text-white"
+                    >
+                        <span className="text-[10px] font-bold uppercase tracking-widest">{activeLangCategory}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#121214] border border-[#27272a] shadow-2xl p-2 z-[100] animate-in fade-in zoom-in-95 duration-200">
+                            <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                                {categories.map((cat) => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => {
+                                            setActiveLangCategory(cat);
+                                            setIsDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeLangCategory === cat
+                                            ? 'bg-white text-black'
+                                            : 'text-zinc-500 hover:text-white hover:bg-white/5'}`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div className="space-y-16">
+                {activeLangCategory === "All" ? (
+                    STACKS.map((stack) => (
+                        <div key={stack.name} className="space-y-8">
+                            <div className="flex items-center gap-4">
+                                <h3 className="text-lg font-semibold text-white tracking-tight">{stack.name}</h3>
+                                <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+                                {languages.filter(l => stack.categories.includes(l.category)).map((lang) => (
+                                    <LangCard key={lang.name} lang={lang} />
+                                ))}
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+                        {filteredLangs.map((lang) => (
+                            <LangCard key={lang.name} lang={lang} />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function LangCard({ lang }: { lang: any }) {
+    return (
+        <div
+            onClick={() => window.open(lang.url, '_blank')}
+            className="p-3.5 rounded-xl bg-[#121214] border border-[#27272a] hover:border-indigo-500/50 hover:bg-[#18181b] transition-all cursor-pointer group relative overflow-hidden flex flex-col h-full animate-in fade-in zoom-in-95 duration-500"
+        >
+            <div className="flex items-center justify-between mb-3">
+                <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center group-hover:scale-110 transition-all shadow-2xl overflow-hidden p-2">
+                    <img
+                        src={lang.customLogo || `https://www.google.com/s2/favicons?domain=${new URL(lang.url).hostname}&sz=128`}
+                        alt={lang.name}
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                            if (!lang.customLogo) {
+                                (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${lang.name}&background=6366f1&color=fff`;
+                            }
+                        }}
+                    />
+                </div>
+                <span className="text-[6.5px] font-bold text-zinc-500 tracking-wider bg-zinc-900/50 px-1.5 py-0.5 rounded-md border border-white/5 group-hover:text-white transition-colors">
+                    {lang.category}
+                </span>
+            </div>
+
+            <div className="space-y-1 flex-1">
+                <h3 className="text-[11px] font-medium text-white tracking-tight group-hover:text-indigo-400 transition-colors">{lang.name}</h3>
+                <p className="text-zinc-500 text-[9px] leading-tight font-normal line-clamp-2">
+                    {lang.desc}
+                </p>
+            </div>
+
+            <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0 text-white">
+                <span className="text-[7.5px] font-medium tracking-tight text-indigo-400">Documentation</span>
+                <ExternalLink className="w-2.5 h-2.5" />
+            </div>
+
+            <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all opacity-0 group-hover:opacity-100" />
+        </div>
+    );
+}
+
 function BrowseToolsModule() {
     const [activeCategory, setActiveCategory] = useState("All");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const tools = [
         // Core Vibe Coding Tools
@@ -1563,23 +1795,41 @@ function BrowseToolsModule() {
 
     return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-8 relative z-50">
                 <div className="space-y-2">
                     <h2 className="text-3xl font-semibold text-white tracking-tight">Browse Tools</h2>
                     <p className="text-zinc-500 text-sm uppercase tracking-widest font-medium">The complete vibe coding ecosystem at your fingertips.</p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 ${activeCategory === cat
-                                ? 'bg-white text-black border-white shadow-lg shadow-white/10'
-                                : 'bg-transparent text-zinc-500 border-white/5 hover:border-white/20 hover:text-zinc-300'}`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
+
+                <div className="relative">
+                    <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-3 px-5 py-2.5 rounded-xl bg-[#121214] border border-[#27272a] hover:border-zinc-500 transition-all text-zinc-400 hover:text-white"
+                    >
+                        <span className="text-[10px] font-bold uppercase tracking-widest">{activeCategory}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-[#121214] border border-[#27272a] shadow-2xl p-2 z-[100] animate-in fade-in zoom-in-95 duration-200">
+                            <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                                {categories.map((cat) => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => {
+                                            setActiveCategory(cat);
+                                            setIsDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeCategory === cat
+                                            ? 'bg-white text-black'
+                                            : 'text-zinc-500 hover:text-white hover:bg-white/5'}`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
